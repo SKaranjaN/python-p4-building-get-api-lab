@@ -20,22 +20,14 @@ def index():
 
 @app.route('/bakeries')
 def bakeries():
-    bakeries = []
-    for bakery in Bakery.query.all():
-        bakery_dict = {
-            "id":bakery.id,
-            "name": bakery.name,
-            "created at": bakery.created_at,
-            "updated at": bakery.updated_at,
-        }
-        bakeries.append(bakery_dict)
+
+    bakeries = Bakery.query.all()
+    bakeries_serialized = [bakery.to_dict() for bakery in bakeries]
 
     response = make_response(
-        jsonify(bakeries),
+        bakeries_serialized,
         200
     )
-    response.headers["Content-Type"] = "application/json"
-
     return response
 
 
